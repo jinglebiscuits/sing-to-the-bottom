@@ -26,20 +26,20 @@ Sing.MainMenu.prototype = {
 
 		// SW - this is just a test to see stuff happen.
 		game.stage.backgroundColor = "#4488AA";
+		Sing.COLUMN_SIZE = game.width / 10;
 		this.player = new Sing.Player(this.game);
 		this.player.show();
 
-		COLUMN_SIZE = game.width / 10;
 		for (var i = 0; i < 10; i++) {
 			circle = game.add.graphics(0, 0);
 			circle.beginFill(0xFFFF00, 1);
-			circle.drawRect(COLUMN_SIZE * i, 0, 2, game.height);
+			circle.drawRect(Sing.COLUMN_SIZE * i, 0, 2, game.height);
 			circle.endFill();
 		}
 		for (var i = 0; i < 10; i++) {
 			circle = game.add.graphics(0, 0);
 			circle.beginFill(0xFF00FF, 1);
-			circle.drawRect(COLUMN_SIZE * i + COLUMN_SIZE / 2, 0, 1, game.height);
+			circle.drawRect(Sing.COLUMN_SIZE * i + Sing.COLUMN_SIZE / 2, 0, 1, game.height);
 			circle.endFill();
 		}
 	},

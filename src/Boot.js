@@ -1,7 +1,8 @@
 Sing = {
 	// global variables
 	/* Your game can check Sing.orientated in internal loops to know if it should pause or not */
-    orientated: false
+    orientated: false,
+    COLUMN_SIZE: 10
 };
 
 Sing.Boot = function(game) {
