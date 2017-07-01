@@ -1,6 +1,4 @@
 Sing.MainMenu = function(game) {
-	var circle;
-	var COLUMN_SIZE
 	this.player;
 };
 
@@ -31,12 +29,54 @@ Sing.MainMenu.prototype = {
 		this.player = new Sing.Player(this.game);
 		this.player.show();
 
-		this.player.moveTo();
+		COLUMN_SIZE = game.width / 10;
+		for (var i = 0; i < 10; i++) {
+			circle = game.add.graphics(0, 0);
+			circle.beginFill(0xFFFF00, 1);
+			circle.drawRect(COLUMN_SIZE * i, 0, 2, game.height);
+			circle.endFill();
+		}
+		for (var i = 0; i < 10; i++) {
+			circle = game.add.graphics(0, 0);
+			circle.beginFill(0xFF00FF, 1);
+			circle.drawRect(COLUMN_SIZE * i + COLUMN_SIZE / 2, 0, 1, game.height);
+			circle.endFill();
+		}
 	},
 
 	update: function() {
 		// console.log("updating the main menu: " + myPitch);
 		// document.body.style.backgroundColor = 'rgb(' + Math.floor(myPitch/2) + ',' + 0 + ',' + 0 + ')';
+		if (game.input.keyboard.isDown(Phaser.KeyCode.ZERO)) {
+			this.player.moveTo(10);
+		}
+		if (game.input.keyboard.isDown(Phaser.KeyCode.ONE)) {
+			this.player.moveTo(1);
+		}
+		if (game.input.keyboard.isDown(Phaser.KeyCode.TWO)) {
+			this.player.moveTo(2);
+		}
+		if (game.input.keyboard.isDown(Phaser.KeyCode.THREE)) {
+			this.player.moveTo(3);
+		}
+		if (game.input.keyboard.isDown(Phaser.KeyCode.FOUR)) {
+			this.player.moveTo(4);
+		}
+		if (game.input.keyboard.isDown(Phaser.KeyCode.FIVE)) {
+			this.player.moveTo(5);
+		}
+		if (game.input.keyboard.isDown(Phaser.KeyCode.SIX)) {
+			this.player.moveTo(6);
+		}
+		if (game.input.keyboard.isDown(Phaser.KeyCode.SEVEN)) {
+			this.player.moveTo(7);
+		}
+		if (game.input.keyboard.isDown(Phaser.KeyCode.EIGHT)) {
+			this.player.moveTo(8);
+		}
+		if (game.input.keyboard.isDown(Phaser.KeyCode.NINE)) {
+			this.player.moveTo(9);
+		}
 	},
 
 	startGame: function(pointer) {
