@@ -1,5 +1,7 @@
 Sing.MainMenu = function(game) {
-
+	var circle;
+	var COLUMN_SIZE
+	this.player;
 };
 
 Sing.MainMenu.prototype = {
@@ -25,7 +27,11 @@ Sing.MainMenu.prototype = {
 		// }
 
 		// SW - this is just a test to see stuff happen.
-		this.stage.backgroundColor = "#4488AA";
+		game.stage.backgroundColor = "#4488AA";
+		this.player = new Sing.Player(this.game);
+		this.player.show();
+
+		this.player.moveTo();
 	},
 
 	update: function() {
