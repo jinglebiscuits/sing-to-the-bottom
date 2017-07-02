@@ -1,36 +1,53 @@
 Sing.Player = function(game) {
 	this.game = game;
 	this.isShowing = false;
-	var circle;
+	this.circle;
+	
+	this.getScreenLocationFromColumn = function(column) {
+		column = Math.min(column, 10);
+		colomn = Math.max(1, column);
+		offset = (Sing.COLUMN_SIZE - this.circle.getLocalBounds().width) / 2;
+		return Sing.COLUMN_SIZE * column - Sing.COLUMN_SIZE / 2 - offset
+	};
+	this._pitch = 0;
+	return this;
+}
 
-	this.show = function() {
-		circle = game.add.graphics(0, 0);
-		circle.beginFill(0xFF0000, 1);
+Sing.Player.prototype = {
+	show: function() {
+		this.circle = game.add.graphics(0, 0);
+		this.circle.beginFill(0xFF0000, 1);
 		diameter = Sing.COLUMN_SIZE * 0.75;
 		center = Sing.COLUMN_SIZE / 2;
-		circle.drawCircle(center, diameter/2, diameter);
-		circle.endFill();
+		this.circle.drawCircle(center, diameter / 2, diameter);
+		this.circle.endFill();
 		isShowing = true;
-	};
+	},
 
-	this.moveTo = function(x = 4) {
+	moveTo: function(x = 4, smooth) {
 		if (isShowing) {
-			var slideTween = game.add.tween(circle);
-			slideTween.to({
-				centerX: getScreenLocationFromColumn(x)
-			}, 450, Phaser.Easing.Cubic.InOut);
-			slideTween.onComplete.add(function() {
-				console.log("cheese balls");
-			});
-			slideTween.start();
+			if (smooth) {
+				var slideTween = game.add.tween(this.circle);
+				slideTween.to({
+					centerX: this.getScreenLocationFromColumn(x)
+				}, 450, Phaser.Easing.Cubic.InOut);
+				slideTween.onComplete.add(function() {
+					console.log("cheese balls");
+				});
+				slideTween.start();
+			} else {
+				this.circle.centerX = this.getScreenLocationFromColumn(x);
+			}
 		}
-	}
+	},
 
-	var getScreenLocationFromColumn = function(column) {
-		column = Math.min(column, 10);
-		colomn = Math.max(0, column);
-		offset = (Sing.COLUMN_SIZE - circle.getLocalBounds().width)/2;
-		return Sing.COLUMN_SIZE * column - Sing.COLUMN_SIZE / 2 - offset};
+	set pitch(pitch) {
+		this._pitch = pitch;
+		this.moveTo(pitch * 2 / 100, false);
+	},
+	get pitch() {
+		return this._pitch
+	}
 }
 
 Sing.Player.prototype.constructor = Sing.Player;
