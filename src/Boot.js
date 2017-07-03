@@ -1,10 +1,3 @@
-Sing = {
-	// global variables
-	/* Your game can check Sing.orientated in internal loops to know if it should pause or not */
-    orientated: false,
-    COLUMN_SIZE: 10
-};
-
 Sing.Boot = function(game) {
 
 };
@@ -41,6 +34,8 @@ Sing.Boot.prototype = {
             this.scale.leaveIncorrectOrientation.add(this.leaveIncorrectOrientation, this);
             this.scale.updateLayout(true);
         }
+
+        Sing.COLUMN_SIZE = this.game.width/Sing.COLUMN_COUNT;
 
         this.state.start('Preloader');
 	},

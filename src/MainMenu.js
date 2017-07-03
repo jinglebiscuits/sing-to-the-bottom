@@ -2,6 +2,8 @@ Sing.MainMenu = function(game) {
 	this.player;
 	this.pitchDetect;
 	this.usePitchDetect = false;
+	this.myPoly;
+	this.myGraphicPoly;
 };
 
 Sing.MainMenu.prototype = {
@@ -27,18 +29,17 @@ Sing.MainMenu.prototype = {
 		// }
 
 		// SW - this is just a test to see stuff happen.
-		game.stage.backgroundColor = "#4488AA";
-		Sing.COLUMN_SIZE = game.width / 10;
+		game.stage.backgroundColor = Sing.BACKGROUND_COLOR;
 		this.player = new Sing.Player(this.game);
 		this.player.show();
 
-		for (var i = 0; i < 10; i++) {
+		for (var i = 0; i < Sing.COLUMN_COUNT; i++) {
 			circle = game.add.graphics(0, 0);
 			circle.beginFill(0xFFFF00, 1);
 			circle.drawRect(Sing.COLUMN_SIZE * i, 0, 2, game.height);
 			circle.endFill();
 		}
-		for (var i = 0; i < 10; i++) {
+		for (var i = 0; i < Sing.COLUMN_COUNT; i++) {
 			circle = game.add.graphics(0, 0);
 			circle.beginFill(0xFF00FF, 1);
 			circle.drawRect(Sing.COLUMN_SIZE * i + Sing.COLUMN_SIZE / 2, 0, 1, game.height);
@@ -52,6 +53,18 @@ Sing.MainMenu.prototype = {
 		} else {
 			this.player.moveTo(5);
 		}
+
+		this.myPoly = new Phaser.Polygon(new Phaser.Point(0, 0),
+			new Phaser.Point(10, 0),
+			new Phaser.Point(10, 4),
+			new Phaser.Point(4, 4),
+			new Phaser.Point(4, 10),
+			new Phaser.Point(0, 10),
+			new Phaser.Point(0, 0));
+		this.myGraphicPoly = this.game.add.graphics(0, 0);
+		this.myGraphicPoly.beginFill(0xFF0000, 1);
+		this.myGraphicPoly.drawPolygon(this.myPoly);
+		this.myGraphicPoly.endFill();
 	},
 
 	update: function() {
@@ -89,6 +102,12 @@ Sing.MainMenu.prototype = {
 		}
 		if (game.input.keyboard.isDown(Phaser.KeyCode.NINE)) {
 			this.player.moveTo(9);
+		}
+		if (game.input.keyboard.isDown(Phaser.KeyCode.RIGHT)) {
+			this.player.moveRight();
+		}
+		if (game.input.keyboard.isDown(Phaser.KeyCode.LEFT)) {
+			this.player.moveLeft();
 		}
 	},
 

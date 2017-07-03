@@ -7,9 +7,10 @@ Sing.Player = function(game) {
 	this.circle;
 	this._centerY = 0;
 	this._centerX = 0;
+	this._currentColumn = 1;
 
 	this.getScreenLocationFromColumn = function(column) {
-		column = Math.min(column, 10);
+		column = Math.min(column, Sing.COLUMN_COUNT);
 		colomn = Math.max(1, column);
 		offset = (Sing.COLUMN_SIZE - this.circle.getLocalBounds().width) / 2;
 		return Sing.COLUMN_SIZE * column - Sing.COLUMN_SIZE / 2 - offset
@@ -21,7 +22,7 @@ Sing.Player = function(game) {
 Sing.Player.prototype = {
 	show: function() {
 		this.circle = game.add.graphics(0, 0);
-		this.circle.owner = this;
+		
 		this.circle.beginFill(0xFF0000, 1);
 		diameter = Sing.COLUMN_SIZE * 0.75;
 		center = Sing.COLUMN_SIZE / 2;
@@ -58,17 +59,30 @@ Sing.Player.prototype = {
 						centerX: this.getScreenLocationFromColumn(x),
 						centerY: this._centerY
 					}, 450, Phaser.Easing.Cubic.InOut);
-					this.moveTween.onComplete.add(function(circle, tween) {
+					this.moveTween.onComplete.add(function(circle, tween, column) {
 						console.log("cheese balls");
+						this.currentColumn = column;
 						this.centerX = circle.centerX;
 						this.isMoving = false;
 						this.startFloating();
-					}, this);
+					}, this, 0, x);
 					this.moveTween.start();
 				}
 			} else {
 				this.circle.centerX = this.getScreenLocationFromColumn(x);
 			}
+		}
+	},
+
+	moveRight: function() {
+		if (this._currentColumn < Sing.COLUMN_COUNT) {
+			this.moveTo(this._currentColumn + 1);
+		}
+	},
+
+	moveLeft: function() {
+		if (this._currentColumn > 1) {
+			this.moveTo(this._currentColumn - 1);
 		}
 	},
 
@@ -84,6 +98,12 @@ Sing.Player.prototype = {
 	},
 	get centerX() {
 		return this._centerX;
+	},
+	set currentColumn(column) {
+		this._currentColumn = column;
+	},
+	get currentColumn() {
+		return this._currentColumn;
 	}
 }
 
