@@ -35,7 +35,6 @@ Sing.Player.prototype = {
 	startFloating: function(direction = 1) {
 		var dir = -1 * direction;
 		var newY = dir * (5 + (2 * Math.random()));
-		console.log("float baby: " + newY);
 		this.floatTween = game.add.tween(this.circle);
 		this.floatTween.to({
 			centerY: this._centerY + newY
@@ -61,7 +60,6 @@ Sing.Player.prototype = {
 					}, 450, Phaser.Easing.Cubic.InOut);
 					this.moveTween.onComplete.add(function(circle, tween) {
 						console.log("cheese balls");
-						console.log("centerX = " + this.centerX);
 						this.centerX = circle.centerX;
 						this.isMoving = false;
 						this.startFloating();
@@ -82,11 +80,9 @@ Sing.Player.prototype = {
 		return this._pitch
 	},
 	set centerX(centerX) {
-		console.log("setting x: " + centerX);
 		this._centerX = centerX;
 	},
 	get centerX() {
-		console.log("returning x: " + this._centerX);
 		return this._centerX;
 	}
 }

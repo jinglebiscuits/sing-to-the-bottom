@@ -49,6 +49,8 @@ Sing.MainMenu.prototype = {
 			this.pitchDetect = new PitchDetect(this.game, this.player);
 			this.pitchDetect.onCreate();
 			this.pitchDetect.toggleLiveInput();
+		} else {
+			this.player.moveTo(5);
 		}
 	},
 
