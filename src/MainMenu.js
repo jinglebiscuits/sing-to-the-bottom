@@ -1,6 +1,7 @@
 Sing.MainMenu = function(game) {
 	this.player;
 	this.pitchDetect;
+	this.usePitchDetect = false;
 };
 
 Sing.MainMenu.prototype = {
@@ -44,15 +45,19 @@ Sing.MainMenu.prototype = {
 			circle.endFill();
 		}
 
-		this.pitchDetect = new PitchDetect(this.game, this.player);
-		this.pitchDetect.onCreate();
-		this.pitchDetect.toggleLiveInput();
+		if (this.usePitchDetect) {
+			this.pitchDetect = new PitchDetect(this.game, this.player);
+			this.pitchDetect.onCreate();
+			this.pitchDetect.toggleLiveInput();
+		}
 	},
 
 	update: function() {
 		// console.log("updating the main menu: " + myPitch);
 		// document.body.style.backgroundColor = 'rgb(' + Math.floor(myPitch/2) + ',' + 0 + ',' + 0 + ')';
-		this.pitchDetect.updatePitch();
+		if (this.usePitchDetect) {
+			this.pitchDetect.updatePitch();
+		}
 		if (game.input.keyboard.isDown(Phaser.KeyCode.ZERO)) {
 			this.player.moveTo(10);
 		}

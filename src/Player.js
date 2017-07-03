@@ -24,7 +24,7 @@ Sing.Player.prototype = {
 		isShowing = true;
 	},
 
-	moveTo: function(x = 4, smooth) {
+	moveTo: function(x = 4, smooth = true) {
 		if (isShowing) {
 			if (smooth) {
 				var slideTween = game.add.tween(this.circle);
