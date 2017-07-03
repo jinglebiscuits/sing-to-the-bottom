@@ -1,10 +1,13 @@
 Sing.Player = function(game) {
 	this.game = game;
 	this.isShowing = false;
+	this.isMoving = false;
+	this.moveTween;
+	this.floatTween;
 	this.circle;
 	this._centerY = 0;
 	this._centerX = 0;
-	
+
 	this.getScreenLocationFromColumn = function(column) {
 		column = Math.min(column, 10);
 		colomn = Math.max(1, column);
@@ -29,26 +32,42 @@ Sing.Player.prototype = {
 		isShowing = true;
 	},
 
-	startFloating: function() {
-		console.log("float baby");
-		
+	startFloating: function(direction = 1) {
+		var dir = -1 * direction;
+		var newY = dir * (5 + (2 * Math.random()));
+		console.log("float baby: " + newY);
+		this.floatTween = game.add.tween(this.circle);
+		this.floatTween.to({
+			centerY: this._centerY + newY
+		}, 1000, Phaser.Easing.Sinusoidal.InOut);
+		this.floatTween.onComplete.add(function() {
+			this.startFloating(dir);
+		}, this);
+		this.floatTween.start();
 	},
 
 	moveTo: function(x = 4, smooth = true) {
 		if (isShowing) {
 			if (smooth) {
-				var slideTween = game.add.tween(this.circle);
-				slideTween.to({
-					centerX: this.getScreenLocationFromColumn(x),
-					centerY: this._centerY
-				}, 450, Phaser.Easing.Cubic.InOut);
-				slideTween.onComplete.add(function(circle, tween) {
-					console.log("cheese balls");
-					console.log("centerX = " + circle.owner.centerX);
-					circle.owner.centerX = circle.centerX;
-					circle.owner.startFloating();
-				});
-				slideTween.start();
+				if (!this.isMoving) {
+					if (this.floatTween) {
+						this.floatTween.stop();
+					}
+					this.isMoving = true;
+					this.moveTween = game.add.tween(this.circle);
+					this.moveTween.to({
+						centerX: this.getScreenLocationFromColumn(x),
+						centerY: this._centerY
+					}, 450, Phaser.Easing.Cubic.InOut);
+					this.moveTween.onComplete.add(function(circle, tween) {
+						console.log("cheese balls");
+						console.log("centerX = " + this.centerX);
+						this.centerX = circle.centerX;
+						this.isMoving = false;
+						this.startFloating();
+					}, this);
+					this.moveTween.start();
+				}
 			} else {
 				this.circle.centerX = this.getScreenLocationFromColumn(x);
 			}
