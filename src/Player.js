@@ -43,7 +43,7 @@ Sing.Player.prototype = {
 
 	set pitch(pitch) {
 		this._pitch = pitch;
-		this.moveTo(pitch * 2 / 100, false);
+		this.moveTo(pitch, false);
 	},
 	get pitch() {
 		return this._pitch
