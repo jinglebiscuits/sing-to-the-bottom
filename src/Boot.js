@@ -5,6 +5,7 @@ Sing.Boot = function(game) {
 Sing.Boot.prototype = {
 	preload: function() {
 		this.load.image('preloaderBar', 'images/preload.png');
+		this.load.image('spikes', '../images/spikes.png');
 	},
 
 	create: function() {

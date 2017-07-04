@@ -6,6 +6,8 @@ Sing.UI = function(game) {
 
 Sing.UI.prototype = {
 	getZone: function(startPoint, columns, height) {
+		var zone = game.add.sprite(0, 0, new Phaser.RenderTexture(game, Sing.COLUMN_SIZE * columns, height));
+		zone.right = columns * Sing.COLUMN_SIZE;
 		var topLeftPoly = new Phaser.Polygon(this.getTopLeftArray(startPoint));
 		var topRightPoly = new Phaser.Polygon(this.getTopRightArray(Phaser.Point.add(startPoint, new Phaser.Point(Sing.COLUMN_SIZE * columns, 0))));
 		var bottomLeftPoly = new Phaser.Polygon(this.getBottomLeftArray(Phaser.Point.add(startPoint, new Phaser.Point(0, height))));
@@ -14,6 +16,11 @@ Sing.UI.prototype = {
 		var topRightGraphic = this.getGraphic(topRightPoly);
 		var bottomLeftGraphic = this.getGraphic(bottomLeftPoly);
 		var bottomRightGraphic = this.getGraphic(bottomRightPoly);
+		zone.addChild(topLeftGraphic);
+		zone.addChild(topRightGraphic);
+		zone.addChild(bottomLeftGraphic);
+		zone.addChild(bottomRightGraphic);
+		return zone;
 	},
 
 	getTopLeftArray: function(startPoint) {
@@ -25,7 +32,6 @@ Sing.UI.prototype = {
 		points.push(Phaser.Point.add(startPoint, new Phaser.Point(this.bracketThickness, this.bracketWidth)));
 		points.push(Phaser.Point.add(startPoint, new Phaser.Point(0, this.bracketWidth)));
 		points.push(startPoint);
-		console.log(points);
 		return points;
 	},
 
@@ -38,7 +44,6 @@ Sing.UI.prototype = {
 		points.push(Phaser.Point.add(startPoint, new Phaser.Point(-this.bracketThickness, this.bracketWidth)));
 		points.push(Phaser.Point.add(startPoint, new Phaser.Point(0, this.bracketWidth)));
 		points.push(startPoint);
-		console.log(points);
 		return points;
 	},
 
@@ -51,7 +56,6 @@ Sing.UI.prototype = {
 		points.push(Phaser.Point.add(startPoint, new Phaser.Point(this.bracketThickness, -this.bracketWidth)));
 		points.push(Phaser.Point.add(startPoint, new Phaser.Point(0, -this.bracketWidth)));
 		points.push(startPoint);
-		console.log(points);
 		return points;
 	},
 
@@ -64,7 +68,6 @@ Sing.UI.prototype = {
 		points.push(Phaser.Point.add(startPoint, new Phaser.Point(-this.bracketThickness, -this.bracketWidth)));
 		points.push(Phaser.Point.add(startPoint, new Phaser.Point(0, -this.bracketWidth)));
 		points.push(startPoint);
-		console.log(points);
 		return points;
 	},
 

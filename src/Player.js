@@ -8,11 +8,12 @@ Sing.Player = function(game) {
 	this._centerY = 0;
 	this._centerX = 0;
 	this._currentColumn = 1;
+	this._playerSprite;
 
 	this.getScreenLocationFromColumn = function(column) {
 		column = Math.min(column, Sing.COLUMN_COUNT);
 		colomn = Math.max(1, column);
-		offset = (Sing.COLUMN_SIZE - this.circle.getLocalBounds().width) / 2;
+		offset = (Sing.COLUMN_SIZE - this._playerSprite.width) / 2;
 		return Sing.COLUMN_SIZE * column - Sing.COLUMN_SIZE / 2 - offset
 	};
 	this._pitch = 0;
@@ -27,9 +28,16 @@ Sing.Player.prototype = {
 		diameter = Sing.COLUMN_SIZE * 0.75;
 		center = Sing.COLUMN_SIZE / 2;
 		this._centerY = diameter / 2 + 30;
-		this._cetnerX = center;
-		this.circle.drawCircle(center, this._centerY, diameter);
+		this._centerX = center;
+		
+		this.circle.drawCircle(diameter / 2, diameter / 2, diameter);
 		this.circle.endFill();
+		console.log("circle width: " + this.circle.getLocalBounds().width);
+		this._playerSprite = game.add.sprite(0 , 0, new Phaser.RenderTexture(game, diameter, diameter));
+		this._playerSprite.addChild(this.circle);
+		console.log("spriteWidth: " + this._playerSprite.width);
+		this._playerSprite.centerX = center;
+		this._playerSprite.centerY = center + 30;
 		isShowing = true;
 	},
 
@@ -54,22 +62,22 @@ Sing.Player.prototype = {
 						this.floatTween.stop();
 					}
 					this.isMoving = true;
-					this.moveTween = game.add.tween(this.circle);
+					this.moveTween = game.add.tween(this._playerSprite);
 					this.moveTween.to({
 						centerX: this.getScreenLocationFromColumn(x),
 						centerY: this._centerY
 					}, 450, Phaser.Easing.Cubic.InOut);
-					this.moveTween.onComplete.add(function(circle, tween, column) {
+					this.moveTween.onComplete.add(function(player, tween, column) {
 						console.log("cheese balls");
 						this.currentColumn = column;
-						this.centerX = circle.centerX;
+						this.centerX = player.x;
 						this.isMoving = false;
 						this.startFloating();
 					}, this, 0, x);
 					this.moveTween.start();
 				}
 			} else {
-				this.circle.centerX = this.getScreenLocationFromColumn(x);
+				this._playerSprite.x = this.getScreenLocationFromColumn(x);
 			}
 		}
 	},
@@ -104,6 +112,9 @@ Sing.Player.prototype = {
 	},
 	get currentColumn() {
 		return this._currentColumn;
+	},
+	get playerSprite() {
+		return this._playerSprite;
 	}
 }
 

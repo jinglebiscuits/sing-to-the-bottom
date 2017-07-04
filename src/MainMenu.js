@@ -29,7 +29,11 @@ Sing.MainMenu.prototype = {
 		// 	alert('getUserMedia() is not supported in your browser');
 		// }
 
-		// SW - this is just a test to see stuff happen.
+		game.physics.startSystem(Phaser.Physics.P2JS);
+		game.physics.p2.restitution = 0.9;
+		var zone = this.ui.getZone(new Phaser.Point(0, 0), 1, Sing.COLUMN_SIZE * 2);
+		console.log("zoneWidth: " + zone.width);
+
 		game.stage.backgroundColor = Sing.BACKGROUND_COLOR;
 		this.player = new Sing.Player(this.game);
 		this.player.show();
@@ -52,10 +56,8 @@ Sing.MainMenu.prototype = {
 			this.pitchDetect.onCreate();
 			this.pitchDetect.toggleLiveInput();
 		} else {
-			this.player.moveTo(5);
+			// this.player.moveTo(5);
 		}
-
-		this.ui.getZone(new Phaser.Point(0, 0), 1, Sing.COLUMN_SIZE * 2);
 	},
 
 	update: function() {
