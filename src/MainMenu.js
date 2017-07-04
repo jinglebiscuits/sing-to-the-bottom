@@ -4,6 +4,7 @@ Sing.MainMenu = function(game) {
 	this.usePitchDetect = false;
 	this.myPoly;
 	this.myGraphicPoly;
+	this.ui = new Sing.UI(game);
 };
 
 Sing.MainMenu.prototype = {
@@ -54,17 +55,7 @@ Sing.MainMenu.prototype = {
 			this.player.moveTo(5);
 		}
 
-		this.myPoly = new Phaser.Polygon(new Phaser.Point(0, 0),
-			new Phaser.Point(10, 0),
-			new Phaser.Point(10, 4),
-			new Phaser.Point(4, 4),
-			new Phaser.Point(4, 10),
-			new Phaser.Point(0, 10),
-			new Phaser.Point(0, 0));
-		this.myGraphicPoly = this.game.add.graphics(0, 0);
-		this.myGraphicPoly.beginFill(0xFF0000, 1);
-		this.myGraphicPoly.drawPolygon(this.myPoly);
-		this.myGraphicPoly.endFill();
+		this.ui.getZone(new Phaser.Point(0, 0), 1, Sing.COLUMN_SIZE * 2);
 	},
 
 	update: function() {

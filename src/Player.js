@@ -23,7 +23,7 @@ Sing.Player.prototype = {
 	show: function() {
 		this.circle = game.add.graphics(0, 0);
 		
-		this.circle.beginFill(0xFF0000, 1);
+		this.circle.beginFill(Sing.PLAYER_COLOR, 1);
 		diameter = Sing.COLUMN_SIZE * 0.75;
 		center = Sing.COLUMN_SIZE / 2;
 		this._centerY = diameter / 2 + 30;
