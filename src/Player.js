@@ -13,8 +13,7 @@ Sing.Player = function(game) {
 	this.getScreenLocationFromColumn = function(column) {
 		column = Math.min(column, Sing.COLUMN_COUNT);
 		colomn = Math.max(1, column);
-		offset = (Sing.COLUMN_SIZE - this._playerSprite.width) / 2;
-		return Sing.COLUMN_SIZE * column - Sing.COLUMN_SIZE / 2 - offset
+		return Sing.COLUMN_SIZE * column - Sing.COLUMN_SIZE / 2;
 	};
 	this._pitch = 0;
 	return this;
