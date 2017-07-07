@@ -4,7 +4,8 @@ Sing.MainMenu = function(game) {
 	this.usePitchDetect = false;
 	this.myPoly;
 	this.myGraphicPoly;
-	this.zone;
+	this.zone1;
+	this.zone2;
 	this.ui = new Sing.UI(game);
 };
 
@@ -29,16 +30,6 @@ Sing.MainMenu.prototype = {
 		// } else {
 		// 	alert('getUserMedia() is not supported in your browser');
 		// }
-
-		game.physics.startSystem(Phaser.Physics.ARCADE);
-		this.zone = this.ui.getZone(new Phaser.Point(0, 0), 4, Sing.COLUMN_SIZE * 2);
-		// this.zone.x = Sing.COLUMN_SIZE * 3;
-		console.log("zoneWidth: " + this.zone.width);
-
-		game.stage.backgroundColor = Sing.BACKGROUND_COLOR;
-		this.player = new Sing.Player(this.game);
-		this.player.show();
-
 		for (var i = 0; i < Sing.COLUMN_COUNT; i++) {
 			circle = game.add.graphics(0, 0);
 			circle.beginFill(0xFFFF00, 1);
@@ -52,6 +43,15 @@ Sing.MainMenu.prototype = {
 			circle.endFill();
 		}
 
+		game.physics.startSystem(Phaser.Physics.ARCADE);
+		this.zone1 = this.ui.getZone(new Phaser.Point(0, 0), 1, Sing.COLUMN_SIZE * 2);
+		this.zone2 = this.ui.getZone(new Phaser.Point(0, 0), 9, Sing.COLUMN_SIZE * 2);
+		// this.zone1.x = Sing.COLUMN_SIZE * 3;
+
+		game.stage.backgroundColor = Sing.BACKGROUND_COLOR;
+		this.player = new Sing.Player(this.game);
+		this.player.show();
+
 		if (this.usePitchDetect) {
 			this.pitchDetect = new PitchDetect(this.game, this.player);
 			this.pitchDetect.onCreate();
@@ -60,27 +60,19 @@ Sing.MainMenu.prototype = {
 			// this.player.moveTo(5);
 		}
 		var playerSprite = this.player.playerSprite;
-		console.log("sup: " + playerSprite);
-
-		this.player.playerSprite.body.static = true;
-		// this.zone.body.static = true;
 	},
 
 	overlapHandler: function(obj1, obj2) {
-		console.log("overlap");
 		obj1.getChildAt(0).tint = 0xFFFFFF;
 		if (obj1.x > obj2.x && obj2.width > (obj1.x - obj2.x + obj1.width)){
 			obj1.getChildAt(0).tint = 0x00FFFF;
-			if (obj1) {
-				console.log("You're doing it Peter");
-			}
 		} else {
 			obj1.getChildAt(0).tint = 0xFF0000;
 		}
 	},
 
 	update: function() {
-		game.physics.arcade.overlap(this.player.playerSprite, this.zone, this.overlapHandler, null, this);
+		game.physics.arcade.overlap(this.player.playerSprite, [this.zone1, this.zone2], this.overlapHandler, null, this);
 		// console.log("updating the main menu: " + myPitch);
 		// document.body.style.backgroundColor = 'rgb(' + Math.floor(myPitch/2) + ',' + 0 + ',' + 0 + ')';
 		if (this.usePitchDetect) {
@@ -126,7 +118,7 @@ Sing.MainMenu.prototype = {
 
 	render: function() {
 		// game.debug.body(this.player.playerSprite);
-		// game.debug.body(this.zone);
+		// game.debug.body(this.zone1);
 	},
 
 	startGame: function(pointer) {

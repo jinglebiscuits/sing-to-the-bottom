@@ -43,6 +43,9 @@ Sing.Player.prototype = {
 		this._playerSprite.centerX = center;
 		this._playerSprite.centerY = center + 30;
 		isShowing = true;
+		// this.moveTo(5);
+		console.log(this.getScreenLocationFromColumn(5));
+		this.moveTo(5);
 	},
 
 	startFloating: function(direction = 1) {
