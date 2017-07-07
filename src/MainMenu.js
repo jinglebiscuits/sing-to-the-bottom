@@ -31,7 +31,7 @@ Sing.MainMenu.prototype = {
 		// }
 
 		game.physics.startSystem(Phaser.Physics.ARCADE);
-		this.zone = this.ui.getZone(new Phaser.Point(0, 0), 1, Sing.COLUMN_SIZE * 2);
+		this.zone = this.ui.getZone(new Phaser.Point(0, 0), 4, Sing.COLUMN_SIZE * 2);
 		// this.zone.x = Sing.COLUMN_SIZE * 3;
 		console.log("zoneWidth: " + this.zone.width);
 
@@ -67,17 +67,20 @@ Sing.MainMenu.prototype = {
 	},
 
 	overlapHandler: function(obj1, obj2) {
-		var result;
-		if (obj1) {
-			result = 'You last hit: ' + obj1.sprite.key;
+		console.log("overlap");
+		obj1.getChildAt(0).tint = 0xFFFFFF;
+		if (obj1.x > obj2.x && obj2.width > (obj1.x - obj2.x + obj1.width)){
+			obj1.getChildAt(0).tint = 0x00FFFF;
+			if (obj1) {
+				console.log("You're doing it Peter");
+			}
 		} else {
-			result = 'You last hit: the wall';
+			obj1.getChildAt(0).tint = 0xFF0000;
 		}
-		console.log(result);
 	},
 
 	update: function() {
-		game.physics.arcade.overlap(this.player.playerSprite.body, this.zone.body, this.overlapHandler, null, this);
+		game.physics.arcade.overlap(this.player.playerSprite, this.zone, this.overlapHandler, null, this);
 		// console.log("updating the main menu: " + myPitch);
 		// document.body.style.backgroundColor = 'rgb(' + Math.floor(myPitch/2) + ',' + 0 + ',' + 0 + ')';
 		if (this.usePitchDetect) {
@@ -122,11 +125,8 @@ Sing.MainMenu.prototype = {
 	},
 
 	render: function() {
-		game.debug.bodyInfo(this.player.playerSprite, 32, 32);
-        game.debug.body(this.player.playerSprite);
-
-        game.debug.bodyInfo(this.zone, 32, 32);
-        game.debug.body(this.zone);
+		// game.debug.body(this.player.playerSprite);
+		// game.debug.body(this.zone);
 	},
 
 	startGame: function(pointer) {

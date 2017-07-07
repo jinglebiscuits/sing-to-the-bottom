@@ -34,7 +34,7 @@ Sing.Player.prototype = {
 		this.circle.endFill();
 
 		console.log("circle width: " + this.circle.getLocalBounds().width + "\nColumn width: " + Sing.COLUMN_SIZE);
-		this._playerSprite = game.add.sprite(0, 0, new Phaser.RenderTexture(game, diameter, diameter, "player"));
+		this._playerSprite = game.add.sprite(0, 0, new Phaser.RenderTexture(game, diameter, diameter), "player");
 		game.physics.arcade.enable(this._playerSprite);
 		this._playerSprite.body.setCircle(diameter / 2);
 		this._playerSprite.addChild(this.circle);
