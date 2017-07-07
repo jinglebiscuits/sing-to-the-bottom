@@ -13,7 +13,9 @@ Sing.Player = function(game) {
 	this.getScreenLocationFromColumn = function(column) {
 		column = Math.min(column, Sing.COLUMN_COUNT);
 		colomn = Math.max(1, column);
-		return Sing.COLUMN_SIZE * column - Sing.COLUMN_SIZE / 2;
+		offset = (Sing.COLUMN_SIZE - this._playerSprite.width) * 1.5;
+		console.log("offset: " + offset);
+		return Sing.COLUMN_SIZE * column - Sing.COLUMN_SIZE / 2 - offset
 	};
 	this._pitch = 0;
 	return this;
@@ -21,19 +23,22 @@ Sing.Player = function(game) {
 
 Sing.Player.prototype = {
 	show: function() {
-		this.circle = game.add.graphics(0, 0);
-		
-		this.circle.beginFill(Sing.PLAYER_COLOR, 1);
 		diameter = Sing.COLUMN_SIZE * 0.75;
 		center = Sing.COLUMN_SIZE / 2;
 		this._centerY = diameter / 2 + 30;
 		this._centerX = center;
-		
+
+		this.circle = game.add.graphics(0, 0);
+		this.circle.beginFill(Sing.PLAYER_COLOR, 1);
 		this.circle.drawCircle(diameter / 2, diameter / 2, diameter);
 		this.circle.endFill();
-		console.log("circle width: " + this.circle.getLocalBounds().width);
-		this._playerSprite = game.add.sprite(0 , 0, new Phaser.RenderTexture(game, diameter, diameter));
+
+		console.log("circle width: " + this.circle.getLocalBounds().width + "\nColumn width: " + Sing.COLUMN_SIZE);
+		this._playerSprite = game.add.sprite(0, 0, new Phaser.RenderTexture(game, diameter, diameter, "player"));
+		game.physics.arcade.enable(this._playerSprite);
+		this._playerSprite.body.setCircle(diameter / 2);
 		this._playerSprite.addChild(this.circle);
+		// this._playerSprite.addChild(this.circle);
 		console.log("spriteWidth: " + this._playerSprite.width);
 		this._playerSprite.centerX = center;
 		this._playerSprite.centerY = center + 30;
@@ -43,9 +48,9 @@ Sing.Player.prototype = {
 	startFloating: function(direction = 1) {
 		var dir = -1 * direction;
 		var newY = dir * (5 + (2 * Math.random()));
-		this.floatTween = game.add.tween(this.circle);
+		this.floatTween = game.add.tween(this._playerSprite.body);
 		this.floatTween.to({
-			centerY: this._centerY + newY
+			y: this._centerY + newY
 		}, 1000, Phaser.Easing.Sinusoidal.InOut);
 		this.floatTween.onComplete.add(function() {
 			this.startFloating(dir);
@@ -57,17 +62,19 @@ Sing.Player.prototype = {
 		if (isShowing) {
 			if (smooth) {
 				if (!this.isMoving) {
+					console.log("before x is " + this._playerSprite.body.x);
 					if (this.floatTween) {
 						this.floatTween.stop();
 					}
 					this.isMoving = true;
-					this.moveTween = game.add.tween(this._playerSprite);
+					this.moveTween = game.add.tween(this._playerSprite.body);
 					this.moveTween.to({
-						centerX: this.getScreenLocationFromColumn(x),
-						centerY: this._centerY
+						x: this.getScreenLocationFromColumn(x),
+						y: this._centerY
 					}, 450, Phaser.Easing.Cubic.InOut);
 					this.moveTween.onComplete.add(function(player, tween, column) {
 						console.log("cheese balls");
+						console.log("after x is " + this._playerSprite.body.x);
 						this.currentColumn = column;
 						this.centerX = player.x;
 						this.isMoving = false;

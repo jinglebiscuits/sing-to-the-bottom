@@ -6,8 +6,10 @@ Sing.UI = function(game) {
 
 Sing.UI.prototype = {
 	getZone: function(startPoint, columns, height) {
-		var zone = game.add.sprite(0, 0, new Phaser.RenderTexture(game, Sing.COLUMN_SIZE * columns, height));
-		zone.right = columns * Sing.COLUMN_SIZE;
+		var zone = game.add.sprite(columns * Sing.COLUMN_SIZE - Sing.COLUMN_SIZE/2, height/2, new Phaser.RenderTexture(game, Sing.COLUMN_SIZE * columns, height), "zone");
+		// zone.right = columns * Sing.COLUMN_SIZE;
+		game.physics.arcade.enable(zone);
+		startPoint = Phaser.Point.add(startPoint, new Phaser.Point(-Sing.COLUMN_SIZE / 2, -height / 2));
 		var topLeftPoly = new Phaser.Polygon(this.getTopLeftArray(startPoint));
 		var topRightPoly = new Phaser.Polygon(this.getTopRightArray(Phaser.Point.add(startPoint, new Phaser.Point(Sing.COLUMN_SIZE * columns, 0))));
 		var bottomLeftPoly = new Phaser.Polygon(this.getBottomLeftArray(Phaser.Point.add(startPoint, new Phaser.Point(0, height))));

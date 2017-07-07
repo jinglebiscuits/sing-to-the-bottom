@@ -4,6 +4,7 @@ Sing.MainMenu = function(game) {
 	this.usePitchDetect = false;
 	this.myPoly;
 	this.myGraphicPoly;
+	this.zone;
 	this.ui = new Sing.UI(game);
 };
 
@@ -29,10 +30,10 @@ Sing.MainMenu.prototype = {
 		// 	alert('getUserMedia() is not supported in your browser');
 		// }
 
-		game.physics.startSystem(Phaser.Physics.P2JS);
-		game.physics.p2.restitution = 0.9;
-		var zone = this.ui.getZone(new Phaser.Point(0, 0), 1, Sing.COLUMN_SIZE * 2);
-		console.log("zoneWidth: " + zone.width);
+		game.physics.startSystem(Phaser.Physics.ARCADE);
+		this.zone = this.ui.getZone(new Phaser.Point(0, 0), 1, Sing.COLUMN_SIZE * 2);
+		// this.zone.x = Sing.COLUMN_SIZE * 3;
+		console.log("zoneWidth: " + this.zone.width);
 
 		game.stage.backgroundColor = Sing.BACKGROUND_COLOR;
 		this.player = new Sing.Player(this.game);
@@ -58,9 +59,25 @@ Sing.MainMenu.prototype = {
 		} else {
 			// this.player.moveTo(5);
 		}
+		var playerSprite = this.player.playerSprite;
+		console.log("sup: " + playerSprite);
+
+		this.player.playerSprite.body.static = true;
+		// this.zone.body.static = true;
+	},
+
+	overlapHandler: function(obj1, obj2) {
+		var result;
+		if (obj1) {
+			result = 'You last hit: ' + obj1.sprite.key;
+		} else {
+			result = 'You last hit: the wall';
+		}
+		console.log(result);
 	},
 
 	update: function() {
+		game.physics.arcade.overlap(this.player.playerSprite.body, this.zone.body, this.overlapHandler, null, this);
 		// console.log("updating the main menu: " + myPitch);
 		// document.body.style.backgroundColor = 'rgb(' + Math.floor(myPitch/2) + ',' + 0 + ',' + 0 + ')';
 		if (this.usePitchDetect) {
@@ -102,6 +119,14 @@ Sing.MainMenu.prototype = {
 		if (game.input.keyboard.isDown(Phaser.KeyCode.LEFT)) {
 			this.player.moveLeft();
 		}
+	},
+
+	render: function() {
+		game.debug.bodyInfo(this.player.playerSprite, 32, 32);
+        game.debug.body(this.player.playerSprite);
+
+        game.debug.bodyInfo(this.zone, 32, 32);
+        game.debug.body(this.zone);
 	},
 
 	startGame: function(pointer) {
