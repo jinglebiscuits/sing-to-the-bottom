@@ -34,18 +34,18 @@ Sing.Player.prototype = {
 		this.circle.endFill();
 
 		console.log("circle width: " + this.circle.getLocalBounds().width + "\nColumn width: " + Sing.COLUMN_SIZE);
-		this._playerSprite = game.add.sprite(0, 0, new Phaser.RenderTexture(game, diameter, diameter), "player");
+		this._playerSprite = game.add.sprite(game.width/2, this._centerY, new Phaser.RenderTexture(game, diameter, diameter), "player");
 		game.physics.arcade.enable(this._playerSprite);
 		this._playerSprite.body.setCircle(diameter / 2);
 		this._playerSprite.addChild(this.circle);
 		// this._playerSprite.addChild(this.circle);
 		console.log("spriteWidth: " + this._playerSprite.width);
-		this._playerSprite.centerX = center;
-		this._playerSprite.centerY = center + 30;
+		this._centerX = this._playerSprite.centerX;
+		// this._playerSprite.centerY = center + 30;
 		isShowing = true;
-		// this.moveTo(5);
-		console.log(this.getScreenLocationFromColumn(5));
 		this.moveTo(5);
+		console.log(this.getScreenLocationFromColumn(5));
+		// this.moveTo(5);
 	},
 
 	startFloating: function(direction = 1) {
