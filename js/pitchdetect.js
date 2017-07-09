@@ -40,7 +40,6 @@ PitchDetect = function(game, player) {
 	this.onCreate = function() {
 		console.log("onload");
 		audioContext = new AudioContext();
-		MAX_SIZE = Math.max(4, Math.floor(audioContext.sampleRate / 5000)); // corresponds to a 5kHz signal
 
 		detectorElem = document.getElementById("detector");
 		// canvasElem = document.getElementById( "output" );
@@ -133,7 +132,7 @@ PitchDetect = function(game, player) {
 
 		// Connect it to the destination.
 		analyser = audioContext.createAnalyser();
-		analyser.fftSize = 1024;
+		analyser.fftSize = 2048;
 		mediaStreamSource.connect(analyser);
 		initialized = true;
 		console.log("initialized " + initialized);
@@ -247,8 +246,10 @@ PitchDetect = function(game, player) {
 		}
 
 		rms = Math.sqrt(rms / SIZE);
-		if (rms < 0.01) // not enough signal should be 0.01
+		if (rms < 0.01) { // not enough signal should be 0.01
+			// console.log("rms: " + rms + " bufferSize: " + SIZE);
 			return -1;
+		}
 
 		var lastCorrelation = 1;
 		for (var offset = MIN_SAMPLES; offset < MAX_SAMPLES; offset++) {
