@@ -22,6 +22,7 @@ Sing.UI.prototype = {
 		zone.addChild(topRightGraphic);
 		zone.addChild(bottomLeftGraphic);
 		zone.addChild(bottomRightGraphic);
+		zone.triggered = false;
 		return zone;
 	},
 

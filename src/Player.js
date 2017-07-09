@@ -32,6 +32,7 @@ Sing.Player.prototype = {
 		this.circle.beginFill(Sing.PLAYER_COLOR, 1);
 		this.circle.drawCircle(diameter / 2, diameter / 2, diameter);
 		this.circle.endFill();
+		this.circle.tint = 0xFF0000
 
 		console.log("circle width: " + this.circle.getLocalBounds().width + "\nColumn width: " + Sing.COLUMN_SIZE);
 		this._playerSprite = game.add.sprite(game.width/2, this._centerY, new Phaser.RenderTexture(game, diameter, diameter), "player");
@@ -61,7 +62,7 @@ Sing.Player.prototype = {
 		this.floatTween.start();
 	},
 
-	moveTo: function(x = 4, smooth = true) {
+	moveTo: function(x = 4, smooth = true, time = 450, callBack) {
 		if (isShowing) {
 			if (smooth) {
 				if (!this.isMoving) {
@@ -74,15 +75,18 @@ Sing.Player.prototype = {
 					this.moveTween.to({
 						x: this.getScreenLocationFromColumn(x),
 						y: this._centerY
-					}, 450, Phaser.Easing.Cubic.InOut);
-					this.moveTween.onComplete.add(function(player, tween, column) {
+					}, time, Phaser.Easing.Cubic.InOut);
+					this.moveTween.onComplete.add(function(player, tween, column, callback) {
 						console.log("cheese balls");
 						console.log("after x is " + this._playerSprite.body.x);
 						this.currentColumn = column;
 						this.centerX = player.x;
 						this.isMoving = false;
 						this.startFloating();
-					}, this, 0, x);
+						if (callback) {
+							callback();
+						}
+					}, this, 0, x, callBack);
 					this.moveTween.start();
 				}
 			} else {

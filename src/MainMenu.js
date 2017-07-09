@@ -64,11 +64,16 @@ Sing.MainMenu.prototype = {
 
 	overlapHandler: function(obj1, obj2) {
 		obj1.getChildAt(0).tint = 0xFFFFFF;
-		if (obj1.x > obj2.x && obj2.width > (obj1.x - obj2.x + obj1.width)){
+		if (this.isContainedBy(obj1, obj2)){
 			obj1.getChildAt(0).tint = 0x00FFFF;
+			obj2.triggered = true;
 		} else {
 			obj1.getChildAt(0).tint = 0xFF0000;
 		}
+	},
+
+	isContainedBy: function(obj, container) {
+		return obj.x > container.x && container.width > (obj.x - container.x + obj.width);
 	},
 
 	update: function() {
@@ -77,6 +82,10 @@ Sing.MainMenu.prototype = {
 		// document.body.style.backgroundColor = 'rgb(' + Math.floor(myPitch/2) + ',' + 0 + ',' + 0 + ')';
 		if (this.usePitchDetect) {
 			this.pitchDetect.updatePitch();
+		}
+		if (this.zone1.triggered && this.zone2.triggered) {
+			console.log("go on and win");
+			this.startGame();
 		}
 		if (game.input.keyboard.isDown(Phaser.KeyCode.ZERO)) {
 			this.player.moveTo(10);
@@ -123,10 +132,13 @@ Sing.MainMenu.prototype = {
 
 	startGame: function(pointer) {
 
-		// this.music.stop();
+		// var centerPlayerTween = game.add.tween
+		this.player.moveTo(5, true, 2000, function() {
+			game.state.start('Game');
+		})
 
 		//	And start the actual game
-		this.state.start('Game');
+		// this.state.start('Game');
 
 	},
 
