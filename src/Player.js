@@ -50,8 +50,8 @@ Sing.Player.prototype = {
 	},
 
 	startFloating: function(direction = 1) {
-		var dir = -1 * direction;
-		var newY = dir * (5 + (2 * Math.random()));
+		const dir = -1 * direction;
+		const newY = dir * (5 + (2 * Math.random()));
 		this.floatTween = game.add.tween(this._playerSprite.body);
 		this.floatTween.to({
 			y: this._centerY + newY
