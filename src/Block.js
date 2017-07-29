@@ -22,10 +22,19 @@ Sing.Block.prototype = {
 	},
 
 	startLevel: function(level) {
-		for (let i = 0; i < 5; i++) {
-			this.blockArray.push(this.getBlock(Math.random() * 200, this.game.height + 1000 - Math.random() * 1000));
+		for (let i = 0; i < 20; i++) {
+			this.blockArray.push(this.getBlock(this.getScreenLocationFromColumn(Math.random() * Sing.COLUMN_COUNT), this.game.height + 1000 - Math.random() * 1000));
 		}
 		console.log(this.blockArray);
+	},
+
+	getScreenLocationFromColumn: function(column) {
+		console.log("column: " + column);
+		column = Math.floor(column);
+		column = Math.min(column, Sing.COLUMN_COUNT);
+		colomn = Math.max(1, column);
+		console.log("returned column: " + column * Sing.COLUMN_SIZE);
+		return Sing.COLUMN_SIZE * column;
 	},
 
 	collisionHandler: function(obj1, obj2) {
@@ -33,7 +42,7 @@ Sing.Block.prototype = {
 	},
 
 	update: function() {
-		for (let i = 0; i < this.blockArray.length; i ++) {
+		for (let i = 0; i < this.blockArray.length; i++) {
 			game.physics.arcade.overlap(this.playerSprite, this.blockArray[i], this.collisionHandler, null, this);
 		}
 	}
