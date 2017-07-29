@@ -6,6 +6,7 @@ Sing.MainMenu = function(game) {
 	this.zone1;
 	this.zone2;
 	this.ui = new Sing.UI(game);
+	this.block;
 };
 
 Sing.MainMenu.prototype = {
@@ -58,11 +59,13 @@ Sing.MainMenu.prototype = {
 		} else {
 			// this.player.moveTo(5);
 		}
+		this.block = new Sing.Block(this.game, this.player.playerSprite);
+		this.block.startLevel(1);
 	},
 
 	overlapHandler: function(obj1, obj2) {
 		obj1.getChildAt(0).tint = 0xFFFFFF;
-		if (this.isContainedBy(obj1, obj2)){
+		if (this.isContainedBy(obj1, obj2)) {
 			obj1.getChildAt(0).tint = 0x00FFFF;
 			obj2.triggered = true;
 		} else {
@@ -76,6 +79,7 @@ Sing.MainMenu.prototype = {
 
 	update: function() {
 		game.physics.arcade.overlap(this.player.playerSprite, [this.zone1, this.zone2], this.overlapHandler, null, this);
+		this.block.update();
 		// console.log("updating the main menu: " + myPitch);
 		// document.body.style.backgroundColor = 'rgb(' + Math.floor(myPitch/2) + ',' + 0 + ',' + 0 + ')';
 		if (Sing.usePitchDetect) {
@@ -126,6 +130,7 @@ Sing.MainMenu.prototype = {
 	render: function() {
 		// game.debug.body(this.player.playerSprite);
 		// game.debug.body(this.zone1);
+		// game.debug.body(this.block1);
 	},
 
 	startGame: function(pointer) {
