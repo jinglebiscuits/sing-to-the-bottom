@@ -1,12 +1,9 @@
 Sing.MainMenu = function(game) {
 	this.player;
 	this.pitchDetect;
-	this.myPoly;
-	this.myGraphicPoly;
 	this.zone1;
 	this.zone2;
 	this.ui = new Sing.UI(game);
-	this.block;
 };
 
 Sing.MainMenu.prototype = {
@@ -59,8 +56,6 @@ Sing.MainMenu.prototype = {
 		} else {
 			// this.player.moveTo(5);
 		}
-		this.block = new Sing.Block(this.game, this.player.playerSprite);
-		this.block.startLevel(1);
 	},
 
 	overlapHandler: function(obj1, obj2) {
@@ -79,7 +74,6 @@ Sing.MainMenu.prototype = {
 
 	update: function() {
 		game.physics.arcade.overlap(this.player.playerSprite, [this.zone1, this.zone2], this.overlapHandler, null, this);
-		this.block.update();
 		// console.log("updating the main menu: " + myPitch);
 		// document.body.style.backgroundColor = 'rgb(' + Math.floor(myPitch/2) + ',' + 0 + ',' + 0 + ')';
 		if (Sing.usePitchDetect) {
